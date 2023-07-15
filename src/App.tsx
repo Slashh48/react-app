@@ -1,17 +1,11 @@
-import ListGroup from "./components/ListGroup";
+import Alert from "./components/Alert";
 
 function App() {
-  let items = ["Zupanja", "Baranja", "Osijek", "Golubac", "Subotica"];
-  const handleSelectItem = (item: string) => {
-    console.log(item);
-  };
   return (
     <div>
-      <ListGroup
-        items={items}
-        heading="Gradovi"
-        onSelectItem={handleSelectItem}
-      />
+      <Alert>
+        Ej, <span> ti momak!?</span>
+      </Alert>
     </div>
   );
 }
