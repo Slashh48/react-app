@@ -1,14 +1,9 @@
-import ListGroup from "./components/ListGroup";
+import { GiCommercialAirplane } from "react-icons/gi";
 
 function App() {
-  const items = ["Subotica", "BeGe", "Arandjelovac"];
   return (
     <div>
-      <ListGroup
-        heading="Gradovi"
-        items={items}
-        onSelectItem={() => items}
-      ></ListGroup>
+      <GiCommercialAirplane size="40" />
     </div>
   );
 }
