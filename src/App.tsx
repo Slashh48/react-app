@@ -1,9 +1,9 @@
-import Button from "./components/Button";
+import Like from "./components/Like";
 
 function App() {
   return (
     <div>
-      <Button onClick={() => {}}>Gumb</Button>
+      <Like onClick={() => console.log("kliko si")} />
     </div>
   );
 }
