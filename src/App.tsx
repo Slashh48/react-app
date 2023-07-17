@@ -1,9 +1,9 @@
-import { GiCommercialAirplane } from "react-icons/gi";
+import Button from "./components/Button";
 
 function App() {
   return (
     <div>
-      <GiCommercialAirplane size="40" />
+      <Button onClick={() => {}}>Gumb</Button>
     </div>
   );
 }
