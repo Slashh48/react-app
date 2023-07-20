@@ -6,10 +6,10 @@ const schema = z.object({
   description: z
     .string()
     .min(3, { message: "The description must be at least 3 characters long." }),
-  age: z
-    .number({ invalid_type_error: "The age field is required." })
-    .min(18, { message: "Must be 18+" })
+  amount: z
+    .number({ invalid_type_error: "The amount field is required." })
     .positive({ message: "Must be a positive number" }),
+  category: z.string().min(1, { message: "Product category is required" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -41,16 +41,32 @@ const Form = () => {
         )}
       </div>
       <div className="mb-3">
-        <label htmlFor="age" className="form-label">
-          Age
+        <label htmlFor="amount" className="form-label">
+          Amount
         </label>
         <input
-          {...register("age", { valueAsNumber: true })}
-          id="age"
+          {...register("amount", { valueAsNumber: true })}
+          id="amount"
           type="number"
           className="form-control"
         />
-        {errors.age && <p className="text-danger">{errors.age.message}</p>}
+        {errors.amount && (
+          <p className="text-danger">{errors.amount.message}</p>
+        )}
+      </div>
+      <div className="mb-3">
+        <label htmlFor="category" className="form-label">
+          Category
+        </label>
+        <select id="category" className="form-select">
+          <option defaultValue="true"></option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        {errors.category && (
+          <p className="text-danger">{errors.category.message}</p>
+        )}
       </div>
       <button className="btn btn-primary" type="submit">
         Submit
