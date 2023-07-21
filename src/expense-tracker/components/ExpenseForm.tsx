@@ -1,31 +1,48 @@
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import categories from "../categories";
 
 const schema = z.object({
   description: z
     .string()
-    .min(3, { message: "The description must be at least 3 characters long." }),
+    .min(3, { message: "The description must be at least 3 characters long." })
+    .max(50, {
+      message: "The description must be less than 50 characters long.",
+    }),
   amount: z
     .number({ invalid_type_error: "The amount field is required." })
-    .positive({ message: "Must be a positive number" }),
-  category: z.string().min(1, { message: "Product category is required" }),
+    .positive({ message: "Must be a positive number" })
+    .min(0.01, { message: "Must be at least 0.01$" })
+    .max(100_000, {
+      message: "Must be less than 100,000$ Nemas bas toliko repa brate",
+    }),
+  category: z.enum(categories, {
+    errorMap: () => ({ message: "Category is required." }),
+  }),
 });
 
-type FormData = z.infer<typeof schema>;
+type ExpenseFormData = z.infer<typeof schema>;
 
-const Form = () => {
+interface Props {
+  onSubmit: (data: ExpenseFormData) => void;
+}
+
+const ExpenseForm = ({ onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
-  };
+  } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        reset();
+      })}
+    >
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -58,11 +75,13 @@ const Form = () => {
         <label htmlFor="category" className="form-label">
           Category
         </label>
-        <select id="category" className="form-select">
-          <option defaultValue="true"></option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select {...register("category")} id="category" className="form-select">
+          <option value=""></option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
         {errors.category && (
           <p className="text-danger">{errors.category.message}</p>
@@ -75,4 +94,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ExpenseForm;
