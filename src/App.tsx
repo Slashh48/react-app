@@ -1,39 +1,22 @@
-import { useState } from "react";
-import ExpenseList from "./expense-tracker/components/ExpenseList";
-import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
-import ExpenseForm from "./expense-tracker/components/ExpenseForm";
+import { useEffect, useRef } from "react";
 
 function App() {
-  const [selectedCategory, setselectedCategory] = useState("");
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "aaaAAA", amount: 10, category: "Utilities" },
-    { id: 2, description: "aaaBBB", amount: 10, category: "Utilities" },
-    { id: 3, description: "aaaCCC", amount: 10, category: "Utilities" },
-    { id: 4, description: "aaaDDD", amount: 10, category: "Utilities" },
-  ]);
+  const ref = useRef<HTMLInputElement>(null);
 
-  const visibleExpenses = selectedCategory
-    ? expenses.filter((e) => e.category === selectedCategory)
-    : expenses;
+  //Cukemberg je to imenovao Effect (retard), bolje da se zove afterRender
+  useEffect(() => {
+    //Side effect, ili ti mijenja nesto van ove komponente; Preciznije, mijenja state DOM-a
+    if (ref.current) ref.current.focus();
+  });
+
+  useEffect(() => {
+    document.title = "Moj Epp";
+  });
+
   return (
-    <>
-      <div className="mb-5">
-        <ExpenseForm
-          onSubmit={(expense) =>
-            setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <ExpenseFilter
-          onSelectCategory={(category) => setselectedCategory(category)}
-        />
-      </div>
-      <ExpenseList
-        expenses={visibleExpenses}
-        onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-      />
-    </>
+    <div>
+      <input ref={ref} type="text" className="form-control" />
+    </div>
   );
 }
 
